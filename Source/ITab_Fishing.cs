@@ -101,9 +101,14 @@ public static class ITab_Fishing_Patch
     {
         Zone_Fishing zone = tab.SelZone;
         ZoneFishingData data = ZoneFishingData.Get( zone );
+        int insertIndex = -1;
         // Change other float options to reset our mode.
-        foreach( FloatMenuOption option in list )
+        for( int i = 0; i < list.Count; ++i )
         {
+            FloatMenuOption option = list[ i ];
+            // Put the new option after the 'Do until X' one.
+            if( option.Label == tab.RepeatModeLabel( FishRepeatMode.TargetCount ))
+                insertIndex = i + 1;
             Action originalAction = option.action;
             option.action = delegate
             {
@@ -114,7 +119,9 @@ public static class ITab_Fishing_Patch
                 tab.targetCountEditBuffer = "1";
             };
         }
-        list.Add(new FloatMenuOption("UntilNutrition.FishRepeatMode_UntilNutrition".Translate().CapitalizeFirst(),
+        if( insertIndex == -1 ) // huh?
+            insertIndex = list.Count - 1;
+        list.Insert( insertIndex, new FloatMenuOption("UntilNutrition.FishRepeatMode_UntilNutrition".Translate().CapitalizeFirst(),
             delegate
             {
                 zone.targetCount = 1;
