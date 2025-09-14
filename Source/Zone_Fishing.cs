@@ -26,6 +26,6 @@ public static class Zone_Fishing_Patch
     [HarmonyPatch(nameof(ExposeData))]
     public static void ExposeData( Zone_Fishing __instance )
     {
-        ZoneFishingData.Get( __instance ).ExposeData();
+        ZoneFishingData.Get( __instance, setupFilter : false ).ExposeData();
     }
 }

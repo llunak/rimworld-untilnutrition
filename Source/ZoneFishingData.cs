@@ -16,12 +16,14 @@ public class ZoneFishingData
 
     private static Dictionary< Zone_Fishing, ZoneFishingData > dict = new Dictionary< Zone_Fishing, ZoneFishingData >();
 
-    public static ZoneFishingData Get( Zone_Fishing zone )
+    public static ZoneFishingData Get( Zone_Fishing zone, bool setupFilter = true )
     {
         ZoneFishingData data;
         if( dict.TryGetValue( zone, out data ))
             return data;
         data = new ZoneFishingData();
+        if( setupFilter )
+            data.SetupFilter( zone );
         dict[ zone ] = data;
         return data;
     }
@@ -47,6 +49,15 @@ public class ZoneFishingData
     private float NutritionCount(Thing thing)
     {
         return thing.GetStatValue(StatDefOf.Nutrition, cacheStaleAfterTicks : 100) * thing.stackCount;
+    }
+
+    public void SetupFilter( Zone_Fishing zone )
+    {
+        WaterBody waterBody = zone.Cells[0].GetWaterBody(zone.Map);
+        foreach (ThingDef item in waterBody.CommonFishIncludingExtras)
+            filter.SetAllow(item, true);
+        foreach (ThingDef item in waterBody.UncommonFish)
+            filter.SetAllow(item, true);
     }
 
     public void ExposeData()
