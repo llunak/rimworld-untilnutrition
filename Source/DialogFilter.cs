@@ -34,6 +34,11 @@ public class DialogFilter : Window
         thingFilterState.quickSearch.Reset();
     }
 
+    public override void PostClose()
+    {
+        zone.RecheckPausedDueToResourceCount();
+    }
+
     public override void DoWindowContents(Rect inRect)
     {
         Rect rect =  new Rect( 0, 0, inRect.width, inRect.height - Window.CloseButSize.y * 1.5f );
