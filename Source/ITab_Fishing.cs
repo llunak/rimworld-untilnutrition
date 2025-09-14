@@ -11,7 +11,7 @@ namespace UntilNutrition;
 [HarmonyPatch(typeof(ITab_Fishing))]
 public static class ITab_Fishing_Patch
 {
-    private const float EXTRA_HEIGHT = 40;
+    private const float EXTRA_HEIGHT = 55;
 
     [HarmonyPostfix]
     [HarmonyPatch(MethodType.Constructor)]
@@ -146,6 +146,11 @@ public static class ITab_Fishing_Patch
         listing.Gap( 10 );
         if( listing.ButtonText( "UntilNutrition.ItemsToCount".Translate()))
             Find.WindowStack.Add( new DialogFilter( zone, data ));
+        listing.Gap( 5 );
+        bool countForbidden = data.countForbidden;
+        listing.CheckboxLabeled("UntilNutrition.CountForbidden".Translate(), ref data.countForbidden);
+        if( data.countForbidden != countForbidden )
+            zone.RecheckPausedDueToResourceCount();
         return listing;
     }
 }

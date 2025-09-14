@@ -13,6 +13,7 @@ public class ZoneFishingData
     // Use Zone_Fishing.targetCount for the 'until X' count.
     public bool active = false;
     public ThingFilter filter = new ThingFilter();
+    public bool countForbidden = false;
 
     private static Dictionary< Zone_Fishing, ZoneFishingData > dict = new Dictionary< Zone_Fishing, ZoneFishingData >();
 
@@ -48,6 +49,11 @@ public class ZoneFishingData
 
     private float NutritionCount(Thing thing)
     {
+        if( !countForbidden && thing is ThingWithComps { compForbiddable: var compForbiddable }
+            && ( compForbiddable?.Forbidden ?? false ))
+        {
+            return 0;
+        }
         return thing.GetStatValue(StatDefOf.Nutrition, cacheStaleAfterTicks : 100) * thing.stackCount;
     }
 
@@ -64,6 +70,7 @@ public class ZoneFishingData
     {
         Scribe_Values.Look(ref active, "UntilNutrition.active", false);
         Scribe_Deep.Look(ref filter, "UntilNutrition.filter");
+        Scribe_Values.Look(ref countForbidden, "UntilNutrition.countForbidden", false);
         if (Scribe.mode == LoadSaveMode.LoadingVars && filter == null )
             filter = new ThingFilter();
     }

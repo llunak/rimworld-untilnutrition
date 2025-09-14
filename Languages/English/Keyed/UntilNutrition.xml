@@ -3,5 +3,6 @@
 
   <UntilNutrition.FishRepeatMode_UntilNutrition>Do until you have X nutrition</UntilNutrition.FishRepeatMode_UntilNutrition>
   <UntilNutrition.ItemsToCount>Items to count</UntilNutrition.ItemsToCount>
+  <UntilNutrition.CountForbidden>Count forbidden</UntilNutrition.CountForbidden>
 
 </LanguageData>
