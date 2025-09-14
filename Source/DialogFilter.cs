@@ -2,6 +2,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UntilNutrition;
@@ -14,6 +15,8 @@ public class DialogFilter : Window
     private ZoneFishingData data;
 
     private ThingFilterUI.UIState thingFilterState = new ThingFilterUI.UIState();
+
+    private readonly SpecialThingFilterDef[] hideFreshRotten = { Defs.AllowFresh, Defs.AllowRotten };
 
     public override Vector2 InitialSize => new Vector2(600f, 600f);
 
@@ -43,6 +46,6 @@ public class DialogFilter : Window
     {
         Rect rect =  new Rect( 0, 0, inRect.width, inRect.height - Window.CloseButSize.y * 1.5f );
         ThingFilterUI.DoThingFilterConfigWindow( rect, thingFilterState, data.filter, Dialog_ManageFoodPolicies.FoodGlobalFilter,
-            forceHideHitPointsConfig : true, forceHideQualityConfig : true );
+            forceHideHitPointsConfig : true, forceHideQualityConfig : true, forceHiddenFilters : hideFreshRotten );
     }
 }
